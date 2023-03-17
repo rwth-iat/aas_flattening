@@ -48,7 +48,7 @@ This section provides details about the connecting initialization of the object.
 <h3>Example of TOML configuration</h3>
 The following sample TOML file outlines the configuration for a Type, “Submodel”:
 
-`[Submodel]
+`[Submodel]<br>
 id_field = "id_short"
 attributes = "id_short,semantic_id"
 [Submodel.init]
