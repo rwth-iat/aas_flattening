@@ -48,13 +48,13 @@ This section provides details about the connecting initialization of the object.
 <h3>Example of TOML configuration</h3>
 The following sample TOML file outlines the configuration for a Type, “Submodel”:
 
-`[Submodel]<br>
-id_field = "id_short"
-attributes = "id_short,semantic_id"
-[Submodel.init]
-object_module = "basyx.aas.model"
-object_class = "Submodel"
-constructor_args = "identification,kind"`
+`[Submodel]`<br>
+`id_field = "id_short"`<br>
+`attributes = "id_short,semantic_id"`<br>
+`[Submodel.init]`<br>
+`object_module = "basyx.aas.model"`<br>
+`object_class = "Submodel"`<br>
+`constructor_args = "identification,kind"`<br>
 
 Another example of TOML file configuration for Type, “Property”. 
 
