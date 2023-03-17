@@ -1,4 +1,3 @@
-Table of Contents
 <ol>
 <li><h3>Overview</h3>
 This specification file outlines the API and the format of the TOML file required to convert rows in a CSV File into AAS objects. The TOML file is a configuration file that contains the mapping between the CSV file and the AAS objects. It is used to define the structure of the AAS objects and the mapping between the CSV file and the AAS objects. 
@@ -46,7 +45,7 @@ This section provides details about the connecting initialization of the object.
 </li>
 </ol>
 <li>
-Example of TOML configuration
+<h3>Example of TOML configuration</h3>
 The following sample TOML file outlines the configuration for a Type, “Submodel”:
 
 `[Submodel]
@@ -77,7 +76,7 @@ parent_attrib = "value"`
 Here in the Property Type config example, the custom initializer method is used to initialize Property Object. Moreover, the details about its parent connection are also specified. A property can have two types of parents, Submodel and SubmodelElementCollection.
 </li>
 
-<li>Custom Initializers
+<li><h3>Custom Initializers</h3>
 It is used to initialize an object of a particular type in a custom way. We must specify the module and function that contain the custom code in the configuration file. The signature for the function must contain these arguments:
 <ul>
 <li>df: The dataframe (Pandas) that represents the row in a CSV.</li>
