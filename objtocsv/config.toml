@@ -1,0 +1,212 @@
+[Submodel]
+object_type = "Submodel"
+id_field = "id_short"
+[[Submodel.attribute]]
+name = "id_short"
+include = true # Note: Do not set to False, as it would generate nonsensical output
+[[Submodel.attribute]]
+name = "category"
+include = false
+[[Submodel.attribute]]
+name = "description"
+include = false
+[[Submodel.attribute]]
+name = "semantic_id"
+include = true
+cast_into = "str"
+[[Submodel.attribute]]
+name = "kind"
+include = false
+[[Submodel.attribute]]
+name = "identification"
+include = true
+cast_into = "str"
+[[Submodel.attribute]]
+name = "administrative_information"
+include = false
+[Submodel.custom_flattening]
+module = "customflatteners"
+function = "flatten_Submodel"
+returns_child = true
+[[Submodel.child]]        #getting child attributes connected to Submodel
+is_list = true
+child_module = "basyx.aas.model"
+child_type = "Qualifier"
+attribute_name="qualifier"
+
+[Qualifier]
+object_type = "Qualifier"
+[[Qualifier.attribute]]
+name = "value_type"
+cast_into = "str"
+[[Qualifier.attribute]]
+name = "value"
+cast_into = "str"
+[[Qualifier.attribute]]
+name = "value_id"
+cast_into = "str"
+[[Qualifier.attribute]]
+name = "semantic_id"
+cast_into = "str"
+
+[Property]
+object_type = "Property"
+include_parents = true
+[[Property.attribute]]
+name = "value_type"
+cast_into = "str"
+[[Property.attribute]]
+name = "value"
+cast_into = "str"
+[[Property.attribute]]
+name = "value_id"
+cast_into = "str"
+[Property.custom_flattening]
+module = "customflatteners"
+function = "flatten_Property"
+
+[MultiLanguageProperty]
+object_type = "MultiLanguageProperty"
+include_parents = true
+[MultiLanguageProperty.custom_flattening]
+module = "customflatteners"
+function = "flatten_MultiLanguageProperty"
+[[MultiLanguageProperty.attribute]]
+name = "value_id"
+cast_into = "str"
+[[MultiLanguageProperty.attribute]]
+name = "value"
+
+[Range]
+include_parents = true
+[Range.custom_flattening]
+module = "customflatteners"
+function = "flatten_Range"
+
+[Blob]
+include_parents = true
+object_type = "Blob"
+[[Blob.attribute]]
+name = "mime_type"
+[[Blob.attribute]]
+name = "value"
+
+[File]
+include_parents = true
+object_type = "File"
+[[File.attribute]]
+name = "mime_type"
+[[File.attribute]]
+name = "value"
+
+[ReferenceElement]
+include_parents = true
+object_type = "ReferenceElement"
+[[ReferenceElement.attribute]]
+name = "value"
+
+[SubmodelElementCollection]
+include_parents = true
+object_type = "SubmodelElementCollection"
+
+
+[SubmodelElementCollectionOrdered]
+include_parents = true
+id_field = "id_short"
+object_type = "SubmodelElementCollectionOrdered"
+[[SubmodelElementCollectionOrdered.child]]
+is_list = true
+attribute_name = "value"
+
+[SubmodelElementCollectionUnordered]
+include_parents = true
+id_field = "id_short"
+object_type = "SubmodelElementCollectionUnordered"
+[[SubmodelElementCollectionUnordered.child]]
+is_list = true
+attribute_name = "value"
+
+[AnnotatedRelationshipElement]
+include_parents = true
+object_type = "AnnotatedRelationshipElement"
+[AnnotatedRelationshipElement.custom_flattening]
+module = "customflatteners"
+function = "flatten_AnnotatedRelationshipElement"
+[[AnnotatedRelationshipElement.child]]
+is_list = true
+attribute_name="annotation"
+
+[RelationshipElement]
+include_parents = true
+object_type = "RelationshipElement"
+[RelationshipElement.custom_flattening]
+module = "customflatteners"
+function = "flatten_RelationshipElement"
+
+
+[Operation]
+include_parents = true
+id_field = "id_short" # Operation has childrens so we need to put a mandatory id, but im not sure what to put here.
+object_type = "Operation"
+[[Operation.child]]
+is_list = true
+attribute_name="input_variable"
+[[Operation.child]]
+is_list = true
+attribute_name="output_variable"
+[[Operation.child]]
+is_list = true
+attribute_name="in_output_variable"
+
+[OperationVariable]
+object_type = "OperationVariable"
+[[OperationVariable.child]]
+is_list = false
+attribute_name="value"
+
+
+[Capability]
+include_parents = true
+object_type = "Capability"
+
+[Entity]
+include_parents = true
+object_type = "Entity"
+[[Entity.child]]
+is_list = true
+attribute_name="statement"
+[[Entity.attribute]]
+name = "value"
+
+[Event]
+include_parents = true
+object_type = "Event"
+
+
+[DataElement]
+[[DataElement.attribute]]
+name = "id_short"
+[[DataElement.attribute]]
+name = "category"
+[[DataElement.attribute]]
+name = "description"
+cast_into = "str"
+[[DataElement.child]]
+is_list = true
+child_module = "basyx.aas.model"
+child_type = "Qualifier"
+attribute_name="qualifier"
+
+[SubmodelElement]
+[[SubmodelElement.attribute]]
+name = "id_short"
+[[SubmodelElement.attribute]]
+name = "category"
+[[SubmodelElement.attribute]]
+name = "description"
+cast_into = "str"
+[[SubmodelElement.child]]
+is_list = true
+child_module = "basyx.aas.model"
+child_type = "Qualifier"
+attribute_name="qualifier"

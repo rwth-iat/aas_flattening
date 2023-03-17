@@ -1,0 +1,63 @@
+[Submodel]
+id_field = "id_short"
+attributes = "id_short,semantic_id"
+[Submodel.init]
+object_module = "basyx.aas.model"
+object_class = "Submodel"
+constructor_args = "identification,kind"
+
+
+[MultiLanguageProperty]
+attributes = "value_id,category,description"
+id_field = "id_short"
+[MultiLanguageProperty.init]
+object_module = "basyx.aas.model"
+object_class = "MultiLanguageProperty"
+constructor_args = "id_short,kind"
+[[MultiLanguageProperty.parent]]
+parent_module = "Submodel"
+parent_package = "basyx.aas.model"
+parent_attrib = "submodel_element"
+[[MultiLanguageProperty.parent]]
+parent_package = "basyx.aas.model"
+parent_module = "SubmodelElementCollection"
+parent_attrib = "value"
+
+[SubmodelElementCollectionOrdered]
+id_field = "id_short"
+attributes = ""
+[SubmodelElementCollectionOrdered.init]
+object_module = "basyx.aas.model"
+object_class = "SubmodelElementC ollectionOrdered"
+constructor_args = "id_short,kind"
+[[SubmodelElementCollectionOrdered.parent]]
+parent_package = "basyx.aas.model"
+parent_module = "Submodel"
+parent_attrib = "submodel_element"
+
+[SubmodelElementCollectionUnordered]
+id_field = "id_short"
+attributes = ""
+[SubmodelElementCollectionUnordered.init]
+object_module = "basyx.aas.model"
+object_class = "SubmodelElementCollectionUnordered"
+constructor_args = "id_short,kind"
+[[SubmodelElementCollectionUnordered.parent]]
+parent_package = "basyx.aas.model"
+parent_module = "Submodel"
+parent_attrib = "submodel_element"
+
+[Property]
+id_field = "id_short"
+attributes = "value_id"
+[Property.custom_init]
+module = "custominitializers"
+function = "init_Property"
+[[Property.parent]]
+parent_package = "basyx.aas.model"
+parent_module = "Submodel"
+parent_attrib = "submodel_element"
+[[Property.parent]]
+parent_package = "basyx.aas.model"
+parent_module = "SubmodelElementCollection"
+parent_attrib = "value"

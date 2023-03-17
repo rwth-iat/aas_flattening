@@ -168,7 +168,7 @@ class SubmodelFlattener:
     def flatten_submodel(self, o: model.Submodel) -> FlatSubmodelObject:
         flat_submodel_object: FlatSubmodelObject = FlatSubmodelObject()
         if self.include_object_type:
-            flat_submodel_object.object_type = "Submodel"
+            flat_submodel_object.object_type = o.__class__.__name__
         if self.include_identification:
             flat_submodel_object.identifier = self._flatten_identifier(o.identification)
         if self.include_id_short:
