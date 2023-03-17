@@ -75,6 +75,7 @@ If we need to create custom functionality to flatten an object. We must specify 
 <li><b>flat_obj</b>: The flattened object of type flattened_type</li>
 <li><b>headers</b>: List of type HeaderList, containing headers to be written in csv.
 </ul>
+
 Example custom flattener signature,
 
 `def flatten_Submodel(o: model.Submodel, flat_obj: flattened_type, headers: HeaderList)`
