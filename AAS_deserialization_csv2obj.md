@@ -58,20 +58,20 @@ The following sample TOML file outlines the configuration for a Type, “Submode
 
 Another example of TOML file configuration for Type, “Property”. 
 
-`[Property]
-id_field = "id_short"
-attributes = "value_id"
-[Property.custom_init]
-module = "custominitializers"
-function = "init_Property"
-[[Property.parent]]
-parent_package = "basyx.aas.model"
-parent_module = "Submodel"
-parent_attrib = "submodel_element"
-[[Property.parent]]
-parent_package = "basyx.aas.model"
-parent_module = "SubmodelElementCollection"
-parent_attrib = "value"`
+`[Property]`<br>
+`id_field = "id_short"`<br>
+`attributes = "value_id"`<br>
+`[Property.custom_init]`<br>
+`module = "custominitializers"`<br>
+`function = "init_Property"`<br>
+`[[Property.parent]]`<br>
+`parent_package = "basyx.aas.model"`<br>
+`parent_module = "Submodel"`<br>
+`parent_attrib = "submodel_element"`<br>
+`[[Property.parent]]`<br>
+`parent_package = "basyx.aas.model"`<br>
+`parent_module = "SubmodelElementCollection"`<br>
+`parent_attrib = "value"`<br>
 
 Here in the Property Type config example, the custom initializer method is used to initialize Property Object. Moreover, the details about its parent connection are also specified. A property can have two types of parents, Submodel and SubmodelElementCollection.
 </li>
