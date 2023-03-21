@@ -1,9 +1,8 @@
 import copy
-from generic_data import flattened_type
+from config_based_aas_flattening.objtocsv.generic_data import flattened_type
 from basyx.aas import model
-from basyx.aas.util import traversal
-from header_list import HeaderList
-import util
+from config_based_aas_flattening.objtocsv.header_list import HeaderList
+from config_based_aas_flattening import util
 
 
 def add_type_to_obj(o, flat_obj: flattened_type, headers: HeaderList):

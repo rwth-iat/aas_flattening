@@ -28,7 +28,7 @@ id_field = "id_short"
 attributes = ""
 [SubmodelElementCollectionOrdered.init]
 object_module = "basyx.aas.model"
-object_class = "SubmodelElementC ollectionOrdered"
+object_class = "SubmodelElementCollectionOrdered"
 constructor_args = "id_short,kind"
 [[SubmodelElementCollectionOrdered.parent]]
 parent_package = "basyx.aas.model"
@@ -51,7 +51,7 @@ parent_attrib = "submodel_element"
 id_field = "id_short"
 attributes = "value_id"
 [Property.custom_init]
-module = "custominitializers"
+module = "config_based_aas_flattening.csvtoobj.custominitializers"
 function = "init_Property"
 [[Property.parent]]
 parent_package = "basyx.aas.model"

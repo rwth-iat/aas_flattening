@@ -1,11 +1,9 @@
-import toml
 import pandas as pd
-import key_constants as kc
-from importlib import import_module
-import util
+from config_based_aas_flattening import util, key_constants as kc
 import logging
 
-DEFAULT_DELIM = ";"
+# hyper-parameters
+DEFAULT_DELIMITER = ";"
 
 
 def create_new_object(init_meta, df):
@@ -13,10 +11,9 @@ def create_new_object(init_meta, df):
     const_args = dict()
     for var in id_vars.split(","):
         const_args.update({var: getattr(df, var)})
-    module_name = init_meta[kc.KEY_OBJECT_MODULE]
-    class_name = init_meta[kc.KEY_OBJECT_CLASS]
-    module = import_module(module_name)
-    obj_class = getattr(module, class_name)
+    package = init_meta[kc.KEY_OBJECT_MODULE]
+    module_name = init_meta[kc.KEY_OBJECT_CLASS]
+    obj_class = util.load_module(package, module_name)
     return obj_class(**const_args)
 
 
@@ -27,9 +24,8 @@ def set_values(obj, df, object_meta):
             setattr(obj, attrib, getattr(df, attrib))
 
 
-def csvtoobj(csvfilepath: str, configfilepath: str):
-    dfs = pd.read_csv(csvfilepath, delimiter=DEFAULT_DELIM)
-    csv2obj_config = toml.load(configfilepath)
+def get_obj_from_csv(csvfilepath: str, csv2obj_config):
+    dfs = pd.read_csv(csvfilepath, delimiter=DEFAULT_DELIMITER)
     obj_list = dict()
     for df in dfs.itertuples():
         if hasattr(df, kc.KEY_OBJECT_TYPE):
@@ -41,10 +37,8 @@ def csvtoobj(csvfilepath: str, configfilepath: str):
                     obj = create_new_object(init_meta, df)
                 elif kc.KEY_CUSTOM_INIT in object_meta:
                     custom_init_meta = object_meta[kc.KEY_CUSTOM_INIT]
-                    custom_init_module = import_module(custom_init_meta[kc.KEY_MODULE])
-                    custom_init_func = custom_init_meta[kc.KEY_FUNCTION]
                     args = [df]
-                    obj = getattr(custom_init_module, custom_init_func)(*args)
+                    obj = util.load_module(custom_init_meta[kc.KEY_MODULE], custom_init_meta[kc.KEY_FUNCTION])(*args)
                 set_values(obj, df, object_meta)
                 if kc.KEY_ID_FIELD in object_meta:
                     id_field = object_meta[kc.KEY_ID_FIELD]
@@ -56,8 +50,9 @@ def csvtoobj(csvfilepath: str, configfilepath: str):
                             parent_obj = obj_list[parent_id]
                             parent_metas = object_meta[kc.KEY_PARENT]
                             for par_meta in parent_metas:
+                                parent_package = par_meta[kc.KEY_PARENT_PACKAGE]
                                 parent_module = par_meta[kc.KEY_PARENT_MODULE]
-                                par_class = util.load_module(kc.KEY_parent_package, parent_module)
+                                par_class = util.load_module(parent_package, parent_module)
                                 if isinstance(parent_obj, par_class):
                                     child_list = getattr(parent_obj, par_meta[kc.KEY_PARENT_ATTRIB])
                                     child_list.add(obj)

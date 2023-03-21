@@ -1,9 +1,11 @@
-import util
-from generic_data import flattened_type
-import key_constants as kc
+from config_based_aas_flattening import util, key_constants as kc
+from config_based_aas_flattening.objtocsv.generic_data import flattened_type
 import logging
 from importlib import import_module
-from header_list import HeaderList
+from config_based_aas_flattening.objtocsv.header_list import HeaderList
+
+
+DELIMITER = ";"
 
 
 def get_parents(o):
@@ -22,7 +24,7 @@ def get_simple_class_name_from_type(t):
     return t.__name__
 
 
-def flatten_child(o: flattened_type, config, headers: HeaderList, parent_flattened: flattened_type, par_obj):
+def flatten_child(o: flattened_type, config, parent_flattened: flattened_type, par_obj, headers: HeaderList = None):
     parent_class_name = get_simple_class_name_from_object(par_obj)
     # getting id from parent type
     try:
@@ -35,7 +37,7 @@ def flatten_child(o: flattened_type, config, headers: HeaderList, parent_flatten
             parent_flattened.append_attrib_val_pair({kc.KEY_ID_SHORT: util.generate_object_id(par_obj)})
             headers.append(kc.KEY_ID_SHORT)
         parent_id = parent_flattened.attrib_map.get(kc.KEY_ID_SHORT)
-    flattened_child = get_flatten_from_object(o, config, headers, parent_id=parent_id)
+    flattened_child = get_flatten_from_object(o, config, headers, parent_id=parent_id)[0]
     # returned flattened child object could be a list or a single object
     if not isinstance(flattened_child, list):
         flattened_child = [flattened_child]
@@ -57,14 +59,17 @@ def flatten_as_parents(o, config, headers: HeaderList, flatten_object: flattened
                 par_type = parents[p]
                 logging.info(f"Changing type of {o} to {par_type}")
                 o.__class__ = par_type
-                flatten_object = get_flatten_from_object(o, config, headers, flatten_object, parent_id)
+                flatten_object = get_flatten_from_object(o, config, headers, flatten_object, parent_id)[0]
                 o.__class__ = orig_type
             finally:
                 logging.info(f"Setting type of {o} back to its original type {orig_type}")
                 o.__class__ = orig_type
 
 
-def get_flatten_from_object(o, config, headers: HeaderList, flatten_object: flattened_type = None, parent_id=None):
+def get_flatten_from_object(o, config, headers: HeaderList = None, flatten_object: flattened_type = None,
+                            parent_id=None):
+    if not headers:
+        headers = HeaderList()
     if not flatten_object:
         flatten_object = flattened_type()
     # first we flatten as parents in case only parent class is entered in the config and not the child class
@@ -130,7 +135,7 @@ def get_flatten_from_object(o, config, headers: HeaderList, flatten_object: flat
                     for child in attrib:
                         if check_type and not isinstance(child, child_type):
                             continue
-                        flatten_child(child, config, headers, flatten_object, o)
+                        flatten_child(child, config, flatten_object, o, headers)
         if kc.KEY_CUSTOM_FLATTENING in class_meta:
             custom_flat_meta = class_meta[kc.KEY_CUSTOM_FLATTENING]
             try:
@@ -152,8 +157,8 @@ def get_flatten_from_object(o, config, headers: HeaderList, flatten_object: flat
                     children = flatten_object[0:-1]
                     flatten_object = flatten_object[-1]
                     for child in children:
-                        flatten_child(child, config, headers, flatten_object, o)
-    return flatten_object
+                        flatten_child(child, config, flatten_object, o, headers)
+    return flatten_object, headers
 
 
 def write_flattened_to_csv(headers: HeaderList, flattened_object: flattened_type, f, delimiter: str = ";"):
@@ -167,7 +172,7 @@ def write_flattened_to_csv(headers: HeaderList, flattened_object: flattened_type
                 write_flattened_to_csv(headers, child, f)
 
 
-def write_to_csv(headers: HeaderList, flattened_objects, file: str, delimiter: str = ";"):
+def write_to_csv(headers: HeaderList, flattened_objects, file: str, delimiter: str = DELIMITER):
     def title_string(headers: HeaderList):
         title: str = ""
         for field in headers:

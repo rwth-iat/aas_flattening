@@ -25,7 +25,7 @@ cast_into = "str"
 name = "administrative_information"
 include = false
 [Submodel.custom_flattening]
-module = "customflatteners"
+module = "config_based_aas_flattening.objtocsv.customflatteners"
 function = "flatten_Submodel"
 returns_child = true
 [[Submodel.child]]        #getting child attributes connected to Submodel
@@ -62,14 +62,14 @@ cast_into = "str"
 name = "value_id"
 cast_into = "str"
 [Property.custom_flattening]
-module = "customflatteners"
+module = "config_based_aas_flattening.objtocsv.customflatteners"
 function = "flatten_Property"
 
 [MultiLanguageProperty]
 object_type = "MultiLanguageProperty"
 include_parents = true
 [MultiLanguageProperty.custom_flattening]
-module = "customflatteners"
+module = "config_based_aas_flattening.objtocsv.customflatteners"
 function = "flatten_MultiLanguageProperty"
 [[MultiLanguageProperty.attribute]]
 name = "value_id"
@@ -80,7 +80,7 @@ name = "value"
 [Range]
 include_parents = true
 [Range.custom_flattening]
-module = "customflatteners"
+module = "config_based_aas_flattening.objtocsv.customflatteners"
 function = "flatten_Range"
 
 [Blob]
@@ -130,7 +130,7 @@ attribute_name = "value"
 include_parents = true
 object_type = "AnnotatedRelationshipElement"
 [AnnotatedRelationshipElement.custom_flattening]
-module = "customflatteners"
+module = "config_based_aas_flattening.objtocsv.customflatteners"
 function = "flatten_AnnotatedRelationshipElement"
 [[AnnotatedRelationshipElement.child]]
 is_list = true
@@ -140,7 +140,7 @@ attribute_name="annotation"
 include_parents = true
 object_type = "RelationshipElement"
 [RelationshipElement.custom_flattening]
-module = "customflatteners"
+module = "config_based_aas_flattening.objtocsv.customflatteners"
 function = "flatten_RelationshipElement"
 
 
