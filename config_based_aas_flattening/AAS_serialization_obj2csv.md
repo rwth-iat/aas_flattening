@@ -1,7 +1,7 @@
 <ol><h3>Overview</h3>
-The flattening API is a tool that allows users to convert AAS objects into a CSV file. This specification file outlines the API and the format of the TOML file required to flatten objects into a CSV file. The TOML file is a text-based configuration file that contains the necessary information to flatten objects into a CSV file. The TOML file contains the following information: the object type, the object attributes, information about connected objects to current object, and information regarding custom flattening code. 
+The flattening API is a tool that allows users to convert AAS objects into a CSV file. This specification file outlines the API and the format of the TOML file required to flatten objects into a CSV file. The TOML file is a text-based configuration file that contains the necessary information to flatten objects into a CSV file. The TOML file contains the following information a specific object type: the object type, the object attributes, information about connected objects to object type, and information regarding custom flattening code, if required for an object type. 
 
-Once the TOML file is generated, the flattening API can be employed to convert the object into a CSV file. This API will accept the TOML file and AAS objects as input and will produce a CSV file that contains the flattened object. The CSV file will contain the attributes specified in the TOML file. This CSV file can then be used to store the flattened object in a database or to be used in other applications such as modelling on the objects.
+Once the TOML file is defined, the flattening API can be employed to convert the object into a CSV file. This API will accept the TOML file and AAS objects as input and will produce a CSV file that contains the flattened object. The CSV file will contain for every object, its attributes and linkages to other related objects. This CSV file can then be used to store the flattened object in a database or to be used in other applications such as doing modelling on the objects.
 
 This specification file outlines the API and the format of the TOML file required to flatten objects into a CSV file.
 
@@ -12,7 +12,7 @@ The following is the format of the TOML file required to flatten objects into a 
 This section of the TOML file contains the configuration for each Object type. This section include the following fields:
 <ul>
 <li><b>object_type</b>: (optional) The name of the type of the Object, if it is different from classname.</li> 
-<li><b>id_field</b>: (optional) The attribute name that corresponds to the ID of the object. If the object has any children, an id_field must be specified. If no id_field is provided, the API will generate a random ID in the format {object_type}_{object_uuid}.</li>
+<li><b>id_field</b>: (optional) The attribute name that corresponds to the ID of the object. If the object has any children, an id_field must be specified. If no id_field is provided, the API will generate a random ID in the format {object_type}_{object_uuid} and use it to link the object to its related objects.</li>
 </ul>
 </li>
 
@@ -21,7 +21,7 @@ This section provides details about list of attributes related to a specific obj
 <ul>
 <li><b>name</b>: (mandatory) The name of the attribute.</li>
 <li><b>include</b>: (optional) This boolean flag indicates if the attribute should be included or not. </li>
-<li><b>cast_into</b>: (optional) The data type into which attribute value should be changed or "cast" into. For example, "str" or "int".</li>
+<li><b>cast_into</b>: (optional) The python data type into which attribute value should be changed or "cast" into. For example, "str" or "int".</li>
 </ul>
 </li>
 <li><h4>[[Type.child]]</h4>
@@ -69,7 +69,15 @@ The following sample TOML file outlines the configuration for a Type, “Submode
 
 <li>
 <h4>Custom Flatteners</h4>
-If we need to create custom functionality to flatten an object. We must specify the module and function that contain the custom code in the configuration file. The signature for the function must contain these arguments:
+If we need to create custom functionality to flatten an object. For special cases if the flattening for an object can't be handled by above configuration. To do that, we must specify the module and function that contain the custom code in the configuration file in the object specification. Below is an example for the configuration of object_type "Property", to use custom Flattening.<br>
+  
+`[Property]`<br>
+`object_type = "Property"`<br>
+`[Property.custom_flattening]`<br>
+`module = "config_based_aas_flattening.objtocsv.customflatteners"`<br>
+`function = "flatten_Property"`<br>
+
+In the module file, where we actually define the custom flattening method, the signature for the function must contain these arguments:
 <ul>	
 <li><b>object_type</b>: The object that is being flattened</li>
 <li><b>flat_obj</b>: The flattened object of type flattened_type</li>
